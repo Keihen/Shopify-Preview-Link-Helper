@@ -1,0 +1,14 @@
+{
+  "name": "shopify-preview-link-helper",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.4.0",
+    "vite": "^6.4.2"
+  }
+}

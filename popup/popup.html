@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shopify Helper</title>
+</head>
+
+<body>
+  <div class="shell">
+    <header class="header">
+      <div class="header-left">
+        <span class="header-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <g clip-path="url(#clip0_57_446)">
+              <path
+                d="M1.66666 5.83334L5.34166 2.15834C5.4967 2.00237 5.68109 1.87862 5.88418 1.79424C6.08728 1.70985 6.30506 1.6665 6.52499 1.66667H13.475C13.6949 1.6665 13.9127 1.70985 14.1158 1.79424C14.3189 1.87862 14.5033 2.00237 14.6583 2.15834L18.3333 5.83334"
+                stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M3.33334 10V16.6667C3.33334 17.1087 3.50894 17.5326 3.8215 17.8452C4.13406 18.1577 4.55798 18.3333 5.00001 18.3333H15C15.442 18.3333 15.866 18.1577 16.1785 17.8452C16.4911 17.5326 16.6667 17.1087 16.6667 16.6667V10"
+                stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.5 18.3333V15C12.5 14.558 12.3244 14.134 12.0118 13.8215C11.6993 13.5089 11.2754 13.3333 10.8333 13.3333H9.16667C8.72464 13.3333 8.30072 13.5089 7.98816 13.8215C7.6756 14.134 7.5 14.558 7.5 15V18.3333"
+                stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M1.66666 5.83333H18.3333" stroke="white" stroke-width="1.66667" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path
+                d="M18.3333 5.83333V8.33333C18.3333 8.77536 18.1577 9.19928 17.8452 9.51184C17.5326 9.8244 17.1087 9.99999 16.6667 9.99999C16.1798 9.9732 15.7148 9.78895 15.3417 9.47499C15.2422 9.40314 15.1227 9.36446 15 9.36446C14.8773 9.36446 14.7578 9.40314 14.6583 9.47499C14.2852 9.78895 13.8202 9.9732 13.3333 9.99999C12.8464 9.9732 12.3814 9.78895 12.0083 9.47499C11.9089 9.40314 11.7893 9.36446 11.6667 9.36446C11.544 9.36446 11.4244 9.40314 11.325 9.47499C10.9519 9.78895 10.4869 9.9732 9.99999 9.99999C9.5131 9.9732 9.0481 9.78895 8.67499 9.47499C8.57556 9.40314 8.456 9.36446 8.33332 9.36446C8.21064 9.36446 8.09109 9.40314 7.99166 9.47499C7.61855 9.78895 7.15354 9.9732 6.66666 9.99999C6.17977 9.9732 5.71476 9.78895 5.34166 9.47499C5.24222 9.40314 5.12267 9.36446 4.99999 9.36446C4.87731 9.36446 4.75776 9.40314 4.65832 9.47499C4.28521 9.78895 3.82021 9.9732 3.33332 9.99999C2.8913 9.99999 2.46737 9.8244 2.15481 9.51184C1.84225 9.19928 1.66666 8.77536 1.66666 8.33333V5.83333"
+                stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <defs>
+              <clipPath id="clip0_57_446">
+                <rect width="20" height="20" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </span>
+        <h1 class="header-title">Shopify Helper</h1>
+      </div>
+      <div id="status" class="status-pill" role="status">Loading…</div>
+    </header>
+
+    <main class="main">
+      <div id="notShopify" class="empty-state hidden">
+        <p class="empty-title">Not a Shopify page</p>
+        <p class="empty-desc">Open a Shopify storefront page, then click the extension again.</p>
+      </div>
+
+      <div id="adminContextPanel" class="shopify-panel hidden" aria-label="Admin store context">
+        <section class="meta">
+          <button type="button" class="info-row" data-copy-row="admin-store" title="Click to copy">
+            <span class="info-label">store</span>
+            <span class="info-value-wrap">
+              <span id="adminStoreHandle" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row info-row--last" data-copy-row="admin-shop" title="Click to copy">
+            <span class="info-label">shop</span>
+            <span class="info-value-wrap">
+              <span id="adminShopDomain" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </section>
+      </div>
+
+      <div id="shopifyPanel" class="shopify-panel hidden">
+        <section class="meta" aria-label="Store metadata">
+          <button type="button" class="info-row" data-copy-row="shop" title="Click to copy">
+            <span class="info-label">shop</span>
+            <span class="info-value-wrap">
+              <span id="shop" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row" data-copy-row="themeId" title="Click to copy">
+            <span class="info-label">theme.id</span>
+            <span class="info-value-wrap">
+              <span id="themeId" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row" data-copy-row="themeName" title="Click to copy">
+            <span class="info-label">theme.name</span>
+            <span class="info-value-wrap">
+              <span id="themeName" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row" data-copy-row="schemaName" title="Click to copy">
+            <span class="info-label">schema_name</span>
+            <span class="info-value-wrap">
+              <span id="schemaName" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row info-row--last" data-copy-row="schemaVersion" title="Click to copy">
+            <span class="info-label">schema_version</span>
+            <span class="info-value-wrap">
+              <span id="schemaVersion" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </section>
+
+        <section id="productSkuSection" class="meta product-sku-section hidden" aria-label="Current product">
+          <button type="button" class="info-row" data-copy-row="productHandle" title="Click to copy">
+            <span class="info-label">handle</span>
+            <span class="info-value-wrap">
+              <span id="productHandle" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row" data-copy-row="productId" title="Click to copy">
+            <span class="info-label">product.id</span>
+            <span class="info-value-wrap">
+              <span id="productId" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row" data-copy-row="variantId" title="Click to copy">
+            <span class="info-label">variant.id</span>
+            <span class="info-value-wrap">
+              <span id="variantId" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+          <button type="button" class="info-row info-row--last" data-copy-row="variantSku" title="Click to copy">
+            <span class="info-label">variant.sku</span>
+            <span class="info-value-wrap">
+              <span id="variantSku" class="info-value mono"></span>
+              <span class="info-copy-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </section>
+
+        <section class="actions-section" aria-label="Actions">
+          <h2 class="actions-heading">Actions</h2>
+          <div class="actions">
+            <button id="copyPreviewLink" type="button" class="action-btn action-btn--primary">
+              <span class="action-btn-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.75" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="action-btn-text">
+                <span class="action-btn-title">Copy preview link</span>
+                <span class="action-btn-sub">current page</span>
+              </span>
+            </button>
+            <button id="openAdminLink" type="button" class="action-btn action-btn--secondary">
+              <span class="action-btn-icon action-btn-icon--muted" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 2H14V6" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M6.66666 9.33333L14 2" stroke="currentColor" stroke-width="1.33333" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path
+                    d="M12 8.66667V12.6667C12 13.0203 11.8595 13.3594 11.6095 13.6095C11.3594 13.8595 11.0203 14 10.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V5.33333C2 4.97971 2.14048 4.64057 2.39052 4.39052C2.64057 4.14048 2.97971 4 3.33333 4H7.33333"
+                    stroke="currentColor" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+
+              </span>
+              <span class="action-btn-text">
+                <span class="action-btn-title action-btn-title--dark">Open admin link</span>
+                <span class="action-btn-sub action-btn-sub--muted">page/product/collection/blog/article</span>
+              </span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Raw data 区块已停用
+          <details class="raw-block">
+            <summary class="raw-summary">Raw data</summary>
+            <pre id="raw" class="raw mono"></pre>
+          </details>
+          -->
+      </div>
+    </main>
+
+    <div id="toastRoot" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+
+</html>

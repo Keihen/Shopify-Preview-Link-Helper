@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Shopify Preview Link Helper",
+  "version": "1.0.0",
+  "description": "Shopify 辅助：后台主题一键复制预览链接；前台弹窗展示店铺/主题信息、预览与后台跳转（商品/集合/页面/博客/文章等）；商品页显示 handle、变体 id 与 SKU。",
+  "icons": {
+    "16": "APP-logo-16.png",
+    "32": "APP-logo-32.png",
+    "48": "APP-logo-48.png",
+    "128": "APP-logo-128.png",
+    "256": "APP-logo-256.png"
+  },
+  "action": {
+    "default_title": "Shopify Helper",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "APP-logo-16.png",
+      "32": "APP-logo-32.png",
+      "48": "APP-logo-48.png",
+      "128": "APP-logo-128.png"
+    }
+  },
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "host_permissions": [
+    "https://admin.shopify.com/*",
+    "https://online-store-web.shopifyapps.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://admin.shopify.com/store/*/themes*",
+        "https://admin.shopify.com/store/*/settings/themes*",
+        "https://admin.shopify.com/store/*/online_store/themes*",
+        "https://admin.shopify.com/themes*",
+        "https://online-store-web.shopifyapps.com/themes*"
+      ],
+      "js": ["src/content/admin-themes.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}
