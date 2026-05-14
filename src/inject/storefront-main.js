@@ -57,6 +57,127 @@
     return null;
   }
 
+  /** Theme editor on admin: …/themes/{id}/editor with optional ?previewPath= */
+  function isValidThemeEditorAdminUrl(href) {
+    if (!href || typeof href !== "string") return false;
+    try {
+      const u = new URL(href, location.href);
+      if (u.hostname !== "admin.shopify.com") return false;
+      if (!/\/themes\//i.test(u.pathname) || !/\/editor\b/i.test(u.pathname)) return false;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function tryExtractCustomizeUrlFromPreviewBarIframe() {
+    try {
+      const iframe = document.getElementById("PBarNextFrame");
+      if (!iframe || iframe.tagName !== "IFRAME") return null;
+      const doc = iframe.contentDocument;
+      if (!doc) return null;
+      const boxes = doc.querySelectorAll(".Polaris-Box");
+      if (!boxes.length) return null;
+      const last = boxes[boxes.length - 1];
+      const a = last && last.querySelector && last.querySelector("a");
+      const href = a && (a.href || a.getAttribute("href"));
+      if (!href || !isValidThemeEditorAdminUrl(href)) return null;
+      return new URL(href, location.href).href;
+    } catch {
+      return null;
+    }
+  }
+
+  function normalizePathnameForPreviewPath() {
+    try {
+      let p = location.pathname || "/";
+      if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+      return p.startsWith("/") ? p : `/${p}`;
+    } catch {
+      return "/";
+    }
+  }
+
+  /** Appends `?view=` from the current storefront URL when present (any page type). */
+  function appendViewQueryParamIfPresent(path) {
+    if (!path || typeof path !== "string") return path;
+    try {
+      const view = new URL(location.href).searchParams.get("view");
+      if (view != null && String(view).trim() !== "") {
+        return `${path}?view=${encodeURIComponent(String(view).trim())}`;
+      }
+    } catch {
+      /* ignore */
+    }
+    return path;
+  }
+
+  /** Storefront index: theme editor opens with no query (e.g. …/themes/123/editor). */
+  function isStorefrontHome(analyticsMeta) {
+    const pt = String(safeGet(analyticsMeta, "page.pageType") || "").toLowerCase();
+    if (pt === "home" || pt === "index") return true;
+    try {
+      let p = location.pathname || "/";
+      if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+      if (p === "" || p === "/") return true;
+      if (/^\/[a-z]{2}(-[a-z]{2})?$/i.test(p)) return true;
+    } catch {
+      /* ignore */
+    }
+    return false;
+  }
+
+  function buildBareThemeEditorUrl(shop, themeId) {
+    const storeHandle = shopDomainToHandle(shop);
+    if (!storeHandle || !themeId || !shop) return null;
+    return `https://admin.shopify.com/store/${storeHandle}/themes/${themeId}/editor`;
+  }
+
+  /**
+   * Product preview path: canonical `/products/{handle}` plus optional `?view=` from URL.
+   */
+  function productPreviewPathForCustomize(analyticsMeta) {
+    const h = computeProductHandle(analyticsMeta);
+    if (!h) return null;
+    return appendViewQueryParamIfPresent(`/products/${h}`);
+  }
+
+  /**
+   * Fallback when preview bar iframe is unavailable:
+   * - Home: …/themes/{id}/editor (no params).
+   * - Else: same gate as admin link + theme; product uses meta handle; other types use pathname;
+   *   for any type, current URL `?view=` is appended to previewPath when present.
+   */
+  function computeCustomizeUrlFallback(shop, themeId, analyticsMeta) {
+    if (!themeId || !shop) return null;
+
+    if (isStorefrontHome(analyticsMeta)) {
+      return buildBareThemeEditorUrl(shop, themeId);
+    }
+
+    if (!computeAdminUrl(shop, analyticsMeta)) return null;
+    const storeHandle = shopDomainToHandle(shop);
+    if (!storeHandle) return null;
+
+    const pageType = safeGet(analyticsMeta, "page.pageType");
+    let previewPath = null;
+    if (pageType === "product") {
+      previewPath = productPreviewPathForCustomize(analyticsMeta);
+    } else {
+      previewPath = appendViewQueryParamIfPresent(normalizePathnameForPreviewPath());
+    }
+
+    if (!previewPath) return null;
+    const encoded = encodeURIComponent(previewPath);
+    return `https://admin.shopify.com/store/${storeHandle}/themes/${themeId}/editor?previewPath=${encoded}`;
+  }
+
+  function computeCustomizeUrl(shop, themeId, analyticsMeta) {
+    const fromIframe = tryExtractCustomizeUrlFromPreviewBarIframe();
+    if (fromIframe) return fromIframe;
+    return computeCustomizeUrlFallback(shop, themeId, analyticsMeta);
+  }
+
   /** `?variant=` 与主题切换时 URL 往往最先更新，优先于 meta.selectedVariantId */
   function variantIdFromUrl() {
     try {
@@ -167,6 +288,7 @@
     computed: {
       previewUrl: computePreviewUrl(shop, themeId),
       adminUrl: computeAdminUrl(shop, analyticsMeta),
+      customizeUrl: computeCustomizeUrl(shop, themeId, analyticsMeta),
       isProductPage: safeGet(analyticsMeta, "page.pageType") === "product",
       productHandle: computeProductHandle(analyticsMeta),
       productId: computeProductId(analyticsMeta),

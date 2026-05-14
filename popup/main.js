@@ -255,9 +255,11 @@ function renderShopify(data, options = {}) {
 
   const copyBtn = $("copyPreviewLink");
   const openAdminBtn = $("openAdminLink");
+  const openCustomizeBtn = $("openCustomizeLink");
 
   copyBtn.disabled = !data?.computed?.previewUrl;
   openAdminBtn.disabled = !data?.computed?.adminUrl;
+  if (openCustomizeBtn) openCustomizeBtn.disabled = !data?.computed?.customizeUrl;
 
   copyBtn.onclick = async () => {
     try {
@@ -279,9 +281,23 @@ function renderShopify(data, options = {}) {
     }
   };
 
+  if (openCustomizeBtn) {
+    openCustomizeBtn.onclick = async () => {
+      try {
+        if (!data?.computed?.customizeUrl) return;
+        await chrome.tabs.create({ url: data.computed.customizeUrl });
+        showToast("Opened theme customize in a new tab.", "success");
+      } catch (e) {
+        showToast(`Open failed: ${String(e?.message || e)}`, "error");
+      }
+    };
+  }
+
   if (!silent) {
     if (!data?.computed?.previewUrl) {
       showToast("Preview link unavailable (missing theme id or shop domain).", "info");
+    } else if (!data?.computed?.customizeUrl) {
+      showToast("Customize link unavailable (preview bar iframe or editor path).", "info");
     } else if (!data?.computed?.adminUrl) {
       const pageType = data?.analytics?.meta?.page?.pageType;
       showToast(
